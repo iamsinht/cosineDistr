@@ -2,13 +2,19 @@ Package: cosineDistr
 Title: On the distribution of cosine similarity
 Date: 29 November 2023
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R: c(
     person("Ian", "Smith", email = "ianc.smith@mail.utoronto.ca", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3957-4397")),
-    person("Benjamin", "Haibe-Kains", email = "benjamin.haibe.kains@utoronto.ca", role = c("aut", "cre"), 
+    person("Benjamin", "Haibe-Kains", email = "benjamin.haibe.kains@utoronto.ca", role = c("aut"), 
            comment = c(ORCID = "0000-0002-7684-0079"))
+    )
 Description: This package consists of functions for simulating the distribution of cosine similarity based on the distribution of data. It provides functionality for the simulations and empirical content of "On the distribution of cosine similarity with application to biology," available at doi.org/10.48550/arXiv.2310.13994
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Imports: 
+     ggplot2, 
+     stats,
+     MASS,
+     LaplacesDemon

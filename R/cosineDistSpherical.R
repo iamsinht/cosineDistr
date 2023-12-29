@@ -14,7 +14,7 @@
 #' similarity of the sample, excluding the diagonal
 #' 
 #' @export
-#' @import ggplot2 stats
+#' @import ggplot2 stats MASS
 cosineDistSpherical <- function(ndim=seq(5, 1000, 5), N=1000){
   
   retdf <- data.frame(dim=numeric(), mean=numeric(), sd=numeric(), var=numeric())
@@ -23,7 +23,7 @@ cosineDistSpherical <- function(ndim=seq(5, 1000, 5), N=1000){
     print(ii)
     
     x <- t(MASS::mvrnorm(n=N, mu=numeric(ii), Sigma=diag(ii)))
-    xcos <- perturbKit::cosine(x, x)
+    xcos <- cosine(x, x)
     
     retdf <- rbind(retdf, data.frame(dim=ii, mean=mean(xcos[upper.tri(xcos)]), 
                                      sd=stats::sd(xcos[upper.tri(xcos)]), 
@@ -42,9 +42,10 @@ cosineDistSpherical <- function(ndim=seq(5, 1000, 5), N=1000){
 #' 
 #' @returns the cosine similarity matrix of dimension N x N
 #' @export
+#' @import ggplot2 MASS
 getCosineDist <- function(mydim=500, N=1000, mkfig=1){
   x <- t(MASS::mvrnorm(n=N, mu=numeric(mydim), Sigma=diag(mydim)))
-  xcos <- perturbKit::cosine(x,x)
+  xcos <- cosine(x,x)
   
   ndist <- data.frame(x=seq(-1,1,0.002), y=0.5*stats::dbeta(seq(0,1,0.001), shape1=(mydim-1)/2, shape2=(mydim-1)/2))
   

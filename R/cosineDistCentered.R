@@ -18,7 +18,7 @@
 #' @returns Dataframe with columns: dimension, theoretical variance based on eigenvalues, theoretical variance 
 #' on observed eigenvalues, and empirical variance. 
 #' @export
-#' @importFrom stats rgamma
+#' @import stats MASS
 cosineDistCentered <- function(ndim=seq(100, 1000, 100), iter=3, distiter=10, sPar=c(1, 2, 1, 2)){
   
   mylen <- length(ndim)*iter*distiter
@@ -41,7 +41,7 @@ cosineDistCentered <- function(ndim=seq(100, 1000, 100), iter=3, distiter=10, sP
         x <- t(MASS::mvrnorm(n=2000, mu=numeric(mydim), Sigma=sigmat))
         xpr <- stats::prcomp(t(x))
         
-        xcos <- perturbKit::cosine(x, x)
+        xcos <- cosine(x, x)
         
         ovar <- stats::var(xcos[upper.tri(xcos)])
         tvar <- sum(lambda ** 2)/(sum(lambda) ** 2)
