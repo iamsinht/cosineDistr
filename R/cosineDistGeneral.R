@@ -51,6 +51,12 @@ cosineDistGeneral <- function(ndim=seq(100, 1000, 100), iter=3, distiter=10, sPa
           x <- t(MASS::mvrnorm(n=nSamples, mu=myMeans, Sigma=sigmat))
         } else if (distr == "laplace"){
           x <- t(LaplacesDemon::rmvl(n=nSamples, mu=myMeans, Sigma=sigmat))
+          
+          # Test assumption of eigenvalues
+          xpr <- prcomp(t(x), center=TRUE, scale=FALSE)
+          lambda2 <- xpr$sdev^2
+          myMeans2 <- xpr$center %*% xpr$rotation
+          
         } else if (distr == "mixture"){
           
           a <- stats::rgamma(mixcount, shape=sPar[1], rate=sPar[2])
