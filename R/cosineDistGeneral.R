@@ -30,6 +30,7 @@ cosineDistGeneral <- function(ndim=seq(100, 1000, 100), iter=3, distiter=10, sPa
                       tVarNoMean=numeric(mylen), rssZMeans=numeric(mylen), 
                       approxMean=numeric(mylen), approxVar=numeric(mylen),
                       meanSd=numeric(mylen), nSamples=numeric(mylen),
+                      meanLen=numeric(mylen), sdLen=numeric(mylen), theoryLen=numeric(mylen),
                       distribution=rep(distr, mylen))
   
   k <- 1
@@ -102,6 +103,10 @@ cosineDistGeneral <- function(ndim=seq(100, 1000, 100), iter=3, distiter=10, sPa
           myMeans <- xpr$center %*% xpr$rotation
         }
         
+        meanLen <- mean(sqrt(colSums(x^2)))
+        sdLen <- stats::sd(sqrt(colSums(x^2)))
+        theoryLen <- sqrt(sum(myMeans^2 + lambda))
+        
         xcos <- cosine(x, x)
         
         ovar <- stats::var(xcos[upper.tri(xcos)])
@@ -121,10 +126,12 @@ cosineDistGeneral <- function(ndim=seq(100, 1000, 100), iter=3, distiter=10, sPa
         
         rssZ <- sqrt(sum((myMeans ** 2)/lambda))
         
-        resdf[k,] <- c(ndim=mydim, obsMean=omean, theoryMean=tmean, 
+        resdf[k,] <- data.frame(ndim=mydim, obsMean=omean, theoryMean=tmean, 
                        obsVar=ovar, theoryVar=tvar, tVarNoMean=tvarNoMean, 
                        rssZMeans=rssZ, approxMean=approxmean, approxVar=approxvar,
-                       meanSd=meanSd, nSamples=nSamples, distribution=distr) 
+                       meanSd=meanSd, nSamples=nSamples, 
+                       meanLen=meanLen, sdLen=sdLen, theoryLen=theoryLen,
+                       distribution=distr) 
         k <- k + 1
       }
     }
