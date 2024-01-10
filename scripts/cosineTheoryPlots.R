@@ -12,14 +12,14 @@ makeTheoryPlots <- function(outdir = ".", figdir ="."){
     cosDim <- readRDS(file.path(outdir, "simulCase1CosVsDim.rds"))
   }
   
-  pdf(file.path(figdir, "simulCase1CosVsDim.pdf"), width=8, height=6)
-  ggplot(cosDim, aes(x=sd^2, y=theoryVar, color=dim)) + geom_point() + theme_minimal() + 
-    scale_x_continuous(trans="log10") + scale_y_continuous(trans="log10") + xlab("Empirical variance") + 
-    ylab("Theoretical variance") + ggtitle("Case 1: Variance of cosine similarity for multivariate standard normals") + 
-    geom_abline(slope = 1, intercept=0, lty=2, col="grey")
+  pdf(file.path(figdir, "simulCase1CosVsDim.pdf"), width=6, height=6)
+  print(ggplot(cosDim, aes(x=sd^2, y=theoryVar, color=dim)) + geom_point() + theme_minimal() + 
+    scale_x_continuous(trans="log10") + scale_y_continuous(trans="log10") + xlab("Observed variance") + 
+    ylab("Theoretical variance") + ggtitle("Variance of cosine similarity for multivariate standard normals") + 
+    geom_abline(slope = 1, intercept=0, lty=2, col="grey") + 
+    guides(color=guide_legend(title="Dimension")))
   dev.off()
-  
-  
+
   #### Approximation of normal length simulation
   
   # Load the latest version from H4H; placeholder
@@ -31,15 +31,15 @@ makeTheoryPlots <- function(outdir = ".", figdir ="."){
   }
   
   
-  pdf(file.path(figdir, "simulCase2MeanLengthConvergence.pdf"), width=8, height=6)
-  ggplot(nLen, aes(x=ndim, y=meanLen/theoryLength)) + geom_point(col="royalblue4") + theme_minimal() + xlab("Dimension") + 
+  pdf(file.path(figdir, "simulCase2MeanLengthConvergence.pdf"), width=6, height=6)
+  print(ggplot(nLen, aes(x=ndim, y=meanLen/theoryLength)) + geom_point(col="royalblue4") + theme_minimal() + xlab("Dimension") + 
     ylab("Mean Length / Theory") + ggtitle("Approximation of Length of multivariate normal vectors") + 
-    ylim(c(0.9, 1.05)) + geom_hline(yintercept=1, lty=2, col="grey")
+    ylim(c(0.9, 1.05)) + geom_hline(yintercept=1, lty=2, col="grey"))
   dev.off()
   
-  pdf(file.path(figdir, "simulCase2sdLenConvergence.pdf"), width=8, height=6)
-  ggplot(nLen, aes(x=ndim, y=sdLen/meanLen)) + geom_point(col="orangered3") + theme_minimal() + xlab("Dimension") +
-    ylab("SD Length / Mean Length") + ggtitle("Convergence of SD Length/Mean Length for multivariate normal vectors")
+  pdf(file.path(figdir, "simulCase2sdLenConvergence.pdf"), width=6, height=6)
+  print(ggplot(nLen, aes(x=ndim, y=sdLen/meanLen)) + geom_point(col="orangered3") + theme_minimal() + xlab("Dimension") +
+    ylab("SD Length / Mean Length") + ggtitle("Convergence of SD Length/Mean Length for multivariate normal vectors"))
   dev.off()
   
   
@@ -53,20 +53,20 @@ makeTheoryPlots <- function(outdir = ".", figdir ="."){
     gVar2 <- readRDS(file.path(outdir, "simulCase3CosVsDim.rds"))
   }
   
-  pdf(file.path(figdir, "simulCase3CosVsDim.pdf"), width=8, height=6)
-  ggplot(gVar2, aes(x=-log10(obsVar), y=-log10(theoryVar), color=as.factor(ndim))) + geom_point() + 
+  pdf(file.path(figdir, "simulCase3CosVsDim.pdf"), width=6, height=6)
+  print(ggplot(gVar2, aes(x=-log10(obsVar), y=-log10(theoryVar), color=as.factor(ndim))) + geom_point() + 
     xlim(c(0, 12)) + ylim(c(0,12)) + geom_abline(intercept=0, slope=1, col="grey", lty=2) + 
     theme_minimal() + xlab("-Log10 Observed Variance") + ylab("-Log10 Theoretical Variance") + 
     ggtitle(sprintf("Case 3 Variance simulation, Pearson = %0.4f", cor(gVar2$obsVar, gVar2$theoryVar))) + 
-    guides(color=guide_legend(title="Dimension"))
+    guides(color=guide_legend(title="Dimension")))
   dev.off()
   
-  pdf(file.path(figdir, "simulCase3CosVsDimLinear.pdf"), width=8, height=6)
-  ggplot(gVar2, aes(x=obsVar, y=theoryVar, color=as.factor(ndim))) + geom_point() + 
+  pdf(file.path(figdir, "simulCase3CosVsDimLinear.pdf"), width=6, height=6)
+  print(ggplot(gVar2, aes(x=obsVar, y=theoryVar, color=as.factor(ndim))) + geom_point() + 
     xlim(c(0, 0.061)) + ylim(c(0,0.061)) + geom_abline(intercept=0, slope=1, col="black", lty=2) + 
     theme_minimal() + xlab("Observed Variance") + ylab("Theoretical Variance") + 
     ggtitle(sprintf("Case 3 Variance simulation, Pearson = %0.4f", cor(gVar2$obsVar, gVar2$theoryVar))) + 
-    guides(color=guide_legend(title="Dimension"))
+    guides(color=guide_legend(title="Dimension")))
   dev.off()
 
 }
