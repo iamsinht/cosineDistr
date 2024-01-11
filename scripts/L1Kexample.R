@@ -7,7 +7,7 @@ library(ggrepel)
 # distribution work. 
 
 L1KcosExample <- function(l1kdatapath, l1kmetapath, outdir=".", mycellid="HA1E", 
-                          method="tstat", pclim=50){
+                          method="smd", pclim=50){
   
   method <- match.arg(method, c("tstat", "minVar0"))
   
@@ -66,8 +66,10 @@ L1KcosExample <- function(l1kdatapath, l1kmetapath, outdir=".", mycellid="HA1E",
     return(list(L1Kex=L1Kex, params=params))
   }
   
-  # Alternate approach, explicitly maximizing tstat:
-  if (method == "tstat"){
+  # Alternate approach, explicitly maximizing tstat (actually this is SMD)
+  # I originally described this as the t-statistic, but this is incorrect because the t-statistic
+  # varies with n, whereas SMD does not. see Zhang 2010 "Strictly standardized mean difference" for more.
+  if (method == "smd"){
     
     bx <- sample(dim(ds@mat)[2], 2e3)
     
@@ -201,10 +203,10 @@ makeL1KexpPlots <- function(L1Ktx, outdir, mycellid){
   
   maxt <- 1.05*max(max(L1Ktx$tstat0), max(L1Ktx$tstat1))
   
-  pdf(file.path(outdir, sprintf("l1kcpExperiment_tstat_%s_%d.pdf", mycellid, dim(L1Ktx)[1])), 
+  pdf(file.path(outdir, sprintf("l1kcpExperiment_smdstat_%s_%d.pdf", mycellid, dim(L1Ktx)[1])), 
       width=6, height=6)
   ggplot(L1Ktx, aes(x=tstat0, y=tstat1, label=cp)) + geom_point(color="blue") + theme_minimal() + 
-    xlab("Unmodified data, Compound t-statistic") + ylab("Transformed data, t-statistic") + 
+    xlab("Unmodified data, Compound SMD") + ylab("Transformed data, SMD") + 
     ggtitle(sprintf("L1000 optimized embedding, %s N=%d", mycellid, dim(L1Ktx)[1])) + 
     geom_abline(slope=1, intercept=0, lty=2) + xlim(c(0, maxt)) + ylim(c(0, maxt)) + 
     geom_text_repel(size=2.5) + guides(color="none")
