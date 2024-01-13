@@ -292,6 +292,30 @@ combineSimulations <- function(simpath, outpath=".", figname=""){
   dev.off()
 
   
+  #### Defense figures: ####
+  pdf(file.path(outpath, sprintf("DefensecosDistrSimulation_Log10Var_General.pdf")), width=6.5, height=5)
+  print(ggplot(resdf, aes(x=-log10(obsVar), y=-log10(theoryVar), shape=distribution, color=as.factor(ndim))) + 
+          geom_point() + theme_minimal() + xlab("-log10 Observed variance") + ylab("-log10 Theoretical variance") + 
+          ggtitle(sprintf("Theoretical vs empirical variance, general distributions")) + 
+          guides(color=guide_legend(title="Dimension")) + geom_abline(slope=1, intercept=0, lty=2))
+  dev.off()
+  
+  pdf(file.path(outpath, sprintf("DefensecosDistrSimulation_Means_General.pdf")), width=6.5, height=5)
+  print(ggplot(resdf, aes(x=obsMean, y=theoryMean, shape=distribution, color=as.factor(ndim))) + 
+          geom_point() + theme_minimal() + xlab("Observed mean") + ylab("Theoretical mean") + 
+          ggtitle(sprintf("Theoretical vs empirical mean")) +
+          guides(color=guide_legend(title="Dimension")) + geom_abline(slope=1, intercept=0, lty=2))
+  dev.off()
+  
+  pdf(file.path(outpath, sprintf("DefensecosDistrSimulation_Log10Var_ZeroMean.pdf")), width=6.5, height=5)
+  print(ggplot(resdf[ix,], aes(x=-log10(obsVar), y=-log10(theoryVar), shape=distribution, color=as.factor(ndim))) + 
+          geom_point() + theme_minimal() + xlab("-log10 Observed variance") + ylab("-log10 Theoretical variance") + 
+          ggtitle(sprintf("Theoretical vs empirical variance, centered distributions")) + 
+          guides(color=guide_legend(title="Dimension")) + geom_abline(slope=1, intercept=0, lty=2))
+  dev.off()
+  
+  
+  
     
   saveRDS(resdf, file=file.path(outpath, "cosineDistributionSimulations.rds"))
   

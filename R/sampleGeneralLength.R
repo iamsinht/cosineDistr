@@ -7,8 +7,9 @@
 #' @param meanSd Numeric, standard deviation of the normal distribution from which to sample means
 #' @param nSamples Numeric, number of vectors to sample
 #'
-#' @returns Dataframe with columns: ndim - dimension of vector, meanLen - average length of vectors, sdLen - 
-#' standard deviation of length, theoryLength - theoretical length predicted according to Central Limit Theorem, Smith et al.
+#' @returns A list of  parameters and a dataframe with columns: ndim - dimension of vector, meanLen - average length of vectors, sdLen - 
+#' standard deviation of length, theoryLen - theoretical length predicted according to Smith et al, tLenNoMean - the theoretical
+#' length if the mean were zero, the distribution. 
 #' @export
 #' @importFrom stats sd
 getGenLength <- function(ndim=seq(100, 500, 100), iter=10, distiter=10, sPar=c(1,2,1,2),
@@ -109,6 +110,13 @@ getGenLength <- function(ndim=seq(100, 500, 100), iter=10, distiter=10, sPar=c(1
     }
   }
   
-  return (resdf)
+  params <- c(iter = iter, 
+              distiter = distiter,
+              sPar = sPar, 
+              distr = distr, 
+              meanSd = meanSd, 
+              nSamples = nSamples)
+
+  return (list(params, resdf))
   
 }

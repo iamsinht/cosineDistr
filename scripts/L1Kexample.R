@@ -25,6 +25,7 @@ L1KcosExample <- function(l1kdatapath, l1kmetapath, outdir=".", mycellid="HA1E",
   remap <- optimizeVar(ds@mat)
   oldx <- t(remap$xpr$x) + as.numeric(remap$myMeans)
   
+  # Don't use this
   if (method == "minVar0"){
     
     pcrange <- seq(pclim)
@@ -66,7 +67,7 @@ L1KcosExample <- function(l1kdatapath, l1kmetapath, outdir=".", mycellid="HA1E",
     return(list(L1Kex=L1Kex, params=params))
   }
   
-  # Alternate approach, explicitly maximizing tstat (actually this is SMD)
+  # Alternate approach, explicitly maximizing standardized mean difference.
   # I originally described this as the t-statistic, but this is incorrect because the t-statistic
   # varies with n, whereas SMD does not. see Zhang 2010 "Strictly standardized mean difference" for more.
   if (method == "smd"){
@@ -216,6 +217,15 @@ makeL1KexpPlots <- function(L1Ktx, outdir, mycellid){
       width=6, height=6)
   ggplot(L1Ktx, aes(x=p0, y=p1, label=cp)) + geom_point(color="forestgreen") + theme_minimal() + 
     xlab("Unmodified data, rank < 1%") + ylab("Transformed data, rank < 1%") + 
+    ggtitle(sprintf("L1000 optimized embedding, %s N=%d", mycellid, dim(L1Ktx)[1])) + 
+    geom_abline(slope=1, intercept=0, lty=2) + xlim(c(0, 1)) + ylim(c(0, 1)) + 
+    geom_text_repel(size=2.5) + guides(color="none")
+  dev.off()
+  
+  pdf(file.path(outdir, sprintf("l1kcpExperiment_plt01_%s_%d_7x5.pdf", mycellid, dim(L1Ktx)[1])), 
+      width=7, height=5)
+  ggplot(L1Ktx, aes(x=p0, y=p1, label=cp)) + geom_point(color="forestgreen") + theme_minimal() + 
+    xlab("Original data power, alpha = 0.01") + ylab("Transformed data power, alpha = 0.01") + 
     ggtitle(sprintf("L1000 optimized embedding, %s N=%d", mycellid, dim(L1Ktx)[1])) + 
     geom_abline(slope=1, intercept=0, lty=2) + xlim(c(0, 1)) + ylim(c(0, 1)) + 
     geom_text_repel(size=2.5) + guides(color="none")
