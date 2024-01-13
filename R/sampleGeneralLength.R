@@ -117,6 +117,6 @@ getGenLength <- function(ndim=seq(100, 500, 100), iter=10, distiter=10, sPar=c(1
               meanSd = meanSd, 
               nSamples = nSamples)
 
-  return (list(params, resdf))
+  return (list(params=params, resdf=resdf))
   
 }
