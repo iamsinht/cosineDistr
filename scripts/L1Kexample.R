@@ -23,6 +23,9 @@ L1KcosExample <- function(l1kdatapath, l1kmetapath, outdir=".", mycellid="HA1E",
   # Obtain the eigenvalues and means for the whole dataset along those eigenvectors
   # Oldx is the original dataset in the basis of the eigenvectors of the covariance matrix
   remap <- optimizeVar(ds@mat)
+  
+  xpr <- prcomp(t(ds@mat), center=TRUE, scale=FALSE)
+  
   oldx <- t(remap$xpr$x) + as.numeric(remap$myMeans)
   
   # Don't use this
@@ -84,6 +87,7 @@ L1KcosExample <- function(l1kdatapath, l1kmetapath, outdir=".", mycellid="HA1E",
       mysigma <- getMaxTstat(rowMeans(oldx[,cpix]), rowMeans(oldx), xpr$sdev, iter=5)
       
       # Rescale to get the new eigenvalues
+      # Is this correct?
       optimx <- mysigma$sigma/xpr$sdev * oldx
       
       # Calculate the statistics
