@@ -9,7 +9,7 @@ library(ggrepel)
 L1KcosExample <- function(l1kdatapath, l1kmetapath, outdir=".", mycellid="HA1E", 
                           method="smd", pclim=50){
   
-  method <- match.arg(method, c("tstat", "minVar0"))
+  method <- match.arg(method, c("smd", "minVar0"))
   
   l1kmeta <- perturbKit::read_l1k_meta(l1kmetapath, version=2020)
   mysigs <- l1kmeta$siginfo[l1kmeta$siginfo$cell_id == mycellid & l1kmeta$siginfo$pert_type == "trt_cp",]
